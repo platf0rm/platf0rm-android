@@ -1,0 +1,3 @@
+rootProject.name = 'platf0rmandroid'
+
+include ':app'
