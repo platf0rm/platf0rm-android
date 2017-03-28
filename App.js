@@ -2,6 +2,8 @@ import React from 'react';
 import {Text} from 'react-native';
 import MainScreen from './app/containers/MainScreen'
 import DrawerContent from './app/containers/DrawerContent'
+import { Tabs } from './app/navigation/Router';
+
 import {
     Container,
     Drawer,
@@ -44,15 +46,7 @@ export default class App extends React.Component {
                         <Right />
                     </Header>
 
-                    <MainScreen/>
-
-                    <Footer>
-                        <FooterTab>
-                            <Button full>
-                                <Text style={{color: '#fff'}}>New Post</Text>
-                            </Button>
-                        </FooterTab>
-                    </Footer>
+                    <Tabs />
                 </Container>
             </Drawer>
         );

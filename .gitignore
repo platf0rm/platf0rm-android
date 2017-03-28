@@ -12,3 +12,5 @@ androidcrashlytics-build.properties
 android/app/fabric.properties
 android/projectFilesBackup/
 android/infer-out/
+
+ios/build/
