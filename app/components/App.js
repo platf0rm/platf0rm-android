@@ -1,8 +1,11 @@
 import React from 'react';
 import {Text} from 'react-native';
-import MainScreen from './app/containers/MainScreen'
-import DrawerContent from './app/containers/DrawerContent'
-import { Tabs } from './app/navigation/Router';
+import MainScreen from './ThreadListScreen'
+import DrawerContent from './DrawerContent'
+import { Tabs } from '../navigation/tabs';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as searchAction from '../redux/actions/search';
 
 import {
     Container,
@@ -18,7 +21,7 @@ import {
     Icon,
 } from 'native-base';
 
-export default class App extends React.Component {
+class App extends React.Component {
 
     render() {
         closeDrawer = () => {
@@ -43,7 +46,14 @@ export default class App extends React.Component {
                         <Body>
                         <Title>Usapang Tambay</Title>
                         </Body>
-                        <Right />
+                        <Right >
+                            <Button transparent onPress={() =>{
+                                const navigate = this.props.navigation.navigate;
+                                navigate("NewThread", { title: 'NewThread' })
+                            }}>
+                                <Icon name='add'/>
+                            </Button>
+                        </Right>
                     </Header>
 
                     <Tabs />
@@ -52,6 +62,13 @@ export default class App extends React.Component {
         );
     }
 }
+
+export default connect(
+    (state) => ({}),
+    (dispatch) => (
+        bindActionCreators(searchAction, dispatch)
+    )
+)(App);
 
 const drawerStyles = {
     drawer: {  backgroundColor: '#fff' }
