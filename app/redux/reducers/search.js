@@ -2,7 +2,9 @@
  * Created by aar on 29/03/2017.
  */
 
-const initialState = {};
+const initialState = {
+    threads: []
+};
 
 export default function search(state = initialState, action) {
     switch (action.type) {
