@@ -49,7 +49,7 @@ class App extends React.Component {
                         <Right >
                             <Button transparent onPress={() =>{
                                 const navigate = this.props.navigation.navigate;
-                                navigate("NewThread", { title: 'NewThread' })
+                                navigate('NewThread', { title: 'NewThread' })
                             }}>
                                 <Icon name='add'/>
                             </Button>

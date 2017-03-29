@@ -16,8 +16,8 @@ import {
     Thumbnail,
     Row
 } from 'native-base';
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 let currentValue;
 
 class ThreadListScreen extends Component {
@@ -56,7 +56,7 @@ class ThreadListScreen extends Component {
 
         const that = this;
 
-        let filter = "hot";
+        let filter = 'hot';
         this.props.fetchThreads(filter).then(data => {
             let previousValue = currentValue;
             currentValue = that.select(store.getState());

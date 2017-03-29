@@ -2,12 +2,12 @@
  * Created by aar on 29/03/2017.
  */
 
-import React, { Component } from "react";
-import { Text } from "react-native";
-import { Provider, connect } from "react-redux";
-import { StackNavigator, addNavigationHelpers } from "react-navigation";
-import Routes from "./navigation/routes";
-import getStore from "./redux/store";
+import React, { Component } from 'react';
+import { Text } from 'react-native';
+import { Provider, connect } from 'react-redux';
+import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+import Routes from './navigation/routes';
+import getStore from './redux/store';
 
 const AppNavigator = StackNavigator(Routes, {
     navigationOptions: {
