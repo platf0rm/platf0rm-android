@@ -6,7 +6,7 @@ import { Tabs } from '../navigation/tabs';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as searchAction from '../redux/actions/search';
-
+import * as Rx from "rxjs";
 import {
     Container,
     Drawer,
@@ -19,11 +19,28 @@ import {
     Right,
     Body,
     Icon,
+    Input
 } from 'native-base';
 
 class App extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+    componentWillMount() {
+        let filter = 'platf0rm';
+        this.searchSubject = new Rx.Subject();
+        this.searchSubject
+            .debounceTime(500)
+            .subscribe((searchText) => this.props.fetchThreads(searchText));
+
+        this.searchSubject.next(filter);
+    }
+
     render() {
+
+
         closeDrawer = () => {
             this._drawer._root.close()
         };
@@ -44,7 +61,12 @@ class App extends React.Component {
                             </Button>
                         </Left>
                         <Body>
-                        <Title>Usapang Tambay</Title>
+                            <Input style={{minWidth: 500, color: '#fff'}}
+                                   onChangeText={(text) => {
+                                        this.searchSubject.next(text);
+                                    }}>
+                                Platf0rm
+                            </Input>
                         </Body>
                         <Right >
                             <Button transparent onPress={() =>{

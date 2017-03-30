@@ -4,10 +4,12 @@
 
 import API from '../data/apis';
 
+export const ACTION_GET_THREADS = 'ACTION_GET_THREADS';
+
 function searchThreads(threads) {
     return {
-        type : 'ACTION_GET_THREADS',
-        threads
+        type : ACTION_GET_THREADS,
+        threads : threads
     };
 }
 

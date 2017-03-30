@@ -18,6 +18,7 @@ import {
 } from 'native-base';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import * as PropTypes from "react/lib/ReactPropTypes";
 let currentValue;
 
 class ThreadListScreen extends Component {
@@ -25,27 +26,23 @@ class ThreadListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            results: props.results ? props.results : {items: []}
-        }
+            results: props.results
+        };
+        store.subscribe(() => {
+            currentValue = this.select(store.getState());
+            this.setState({
+                results: currentValue,
+                loading: false
+            });
+        });
     }
 
     select(state) {
         return state.search.threads;
     }
 
-    componentDidMount() {
-        const that = this;
-        store.subscribe(() => {
-            let previousValue = currentValue;
-            currentValue = that.select(store.getState());
-            if (previousValue !== currentValue) {
-                that.setState({
-                    results: currentValue,
-                    loading: false
-                });
-            }
-        });
-        this.search();
+    componentWillMount() {
+        // this.search();
     }
 
     search() {
@@ -53,20 +50,6 @@ class ThreadListScreen extends Component {
         this.setState({
             loading: true
         });
-
-        const that = this;
-
-        let filter = 'hot';
-        this.props.fetchThreads(filter).then(data => {
-            let previousValue = currentValue;
-            currentValue = that.select(store.getState());
-            if (previousValue !== currentValue) {
-                that.setState({
-                    results: that.props.results,
-                    loading: false
-                });
-            }
-        })
     }
 
     render() {
@@ -97,10 +80,14 @@ class ThreadListScreen extends Component {
 
 }
 
+ThreadListScreen.propTypes = {
+    results: PropTypes.any
+};
+
 export default connect(
     state => ({
         // searchTerm: state.search.searchTerm,
-        results: store.getState().search.threads
+        results: state.search.threads
     }),
     dispatch => bindActionCreators(searchAction, dispatch)
 )(ThreadListScreen)
