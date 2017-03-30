@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import {Text} from 'react-native';
 import moment from 'moment'
+import * as searchAction from '../redux/actions/search';
+import {store} from '../index'
+
 import {
     Content,
     Left,
@@ -13,17 +16,36 @@ import {
     Thumbnail,
     Row
 } from 'native-base';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+let currentValue;
 
-class MainScreen extends Component {
+class ThreadListScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            search: 'platf0rm',
-            results: {
-                items: []
-            }
+            results: props.results ? props.results : {items: []}
         }
+    }
+
+    select(state) {
+        return state.search.threads;
+    }
+
+    componentDidMount() {
+        const that = this;
+        store.subscribe(() => {
+            let previousValue = currentValue;
+            currentValue = that.select(store.getState());
+            if (previousValue !== currentValue) {
+                that.setState({
+                    results: currentValue,
+                    loading: false
+                });
+            }
+        });
+        this.search();
     }
 
     search() {
@@ -33,30 +55,18 @@ class MainScreen extends Component {
         });
 
         const that = this;
-        // TODO: Replace with our API
-        return fetch('https://api.github.com/search/repositories?q=' + this.state.search)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // Store the results in the state variable results and set loading to
-                // false to remove the spinner and display the list of repositories
+
+        let filter = 'hot';
+        this.props.fetchThreads(filter).then(data => {
+            let previousValue = currentValue;
+            currentValue = that.select(store.getState());
+            if (previousValue !== currentValue) {
                 that.setState({
-                    results: responseJson,
+                    results: that.props.results,
                     loading: false
                 });
-
-                return responseJson.Search;
-            })
-            .catch((error) => {
-                that.setState({
-                    loading: false
-                });
-
-                console.error(error);
-            });
-    }
-
-    componentDidMount() {
-        this.search();
+            }
+        })
     }
 
     render() {
@@ -87,4 +97,10 @@ class MainScreen extends Component {
 
 }
 
-export default MainScreen
+export default connect(
+    state => ({
+        // searchTerm: state.search.searchTerm,
+        results: store.getState().search.threads
+    }),
+    dispatch => bindActionCreators(searchAction, dispatch)
+)(ThreadListScreen)
