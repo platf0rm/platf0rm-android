@@ -6,7 +6,7 @@
 
 const BASE_URL  = 'https://api.github.com/';
 
-const API  = {
+const API = {
     searchThreads (searchTerm) {
         return fetch(`${BASE_URL}search/repositories?q='${searchTerm}'`);
     }
